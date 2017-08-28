@@ -161,12 +161,9 @@ def str_combination(names):
 
     for i in main_list:
         for name in name_list:
-            simple_comb = str(name) + str(i)
-            final_list.append(simple_comb)
-            simple_comb = str(name).capitalize() + str(i)
-            final_list.append(simple_comb)
-            simple_comb = str(name).upper() + str(i)
-            final_list.append(simple_comb)
+            for name_2 in name_form_change(name):
+                simple_comb = str(name_2) + str(i)
+                final_list.append(simple_comb)
 
     # now adding special chars
     special_char_list = list("`~!@#$%^&*()_+{}|:\"<>?/.\,;'[]'")
@@ -174,12 +171,91 @@ def str_combination(names):
     for j in special_char_list:
         for i in main_list:
             for name in name_list:
-                simple_comb = str(name) + str(j) + str(i)
-                final_list.append(simple_comb)
-                simple_comb = str(name).capitalize() + str(j) + str(i)
-                final_list.append(simple_comb)
-                simple_comb = str(name).upper() + str(j) + str(i)
-                final_list.append(simple_comb)
+                for name_2 in name_form_change(name):
+                    simple_comb = str(name_2) + str(j) + str(i)
+                    final_list.append(simple_comb)
+
+
+    # for numbers like grd0123456789
+    new_str = ""
+    for i in range(0, 10):
+        new_str += str(i)
+        for name in name_list:
+            for name_2 in name_form_change(name):
+                comb = name_2 + str(i)
+                final_list.append(comb)
+                comb = name_2 + new_str
+                final_list.append(comb)
+
+        for j in special_char_list:
+            for name in name_list:
+                for name_2 in name_form_change(name):
+                    simple_comb = str(name_2) + str(j) + str(i)
+                    final_list.append(simple_comb)
+
+                    simple_comb = str(name_2) + str(j) + new_str
+                    final_list.append(simple_comb)
+
+    # for combinations like grd345, grd1234
+    for i in range(0, 11):
+        for j in range(0, 11):
+            y = ""
+            for x in range(i, j):
+                y += str(x)
+            for name in name_list:
+                for name_2 in name_form_change(name):
+                    comb = name_2 + y
+                    final_list.append(comb)
+
+            for j in special_char_list:
+                for name in name_list:
+                    for name_2 in name_form_change(name):
+                        comb = name_2 + j + y
+                        final_list.append(comb)
+
+    # for combinations like grd9876, grd987654
+    new_str = ""
+    for i in range(9, 0, -1):
+        new_str += str(i)
+        for name in name_list:
+            for name_2 in name_form_change(name):
+                comb = name_2 + str(i)
+                final_list.append(comb)
+
+                comb = name_2 + new_str
+                final_list.append(comb)
+
+        for j in special_char_list:
+            for name in name_list:
+                for name_2 in name_form_change(name):
+                    comb = name_2 + j + str(i)
+                    final_list.append(comb)
+
+                    comb = name_2 + j + new_str
+                    final_list.append(comb)
+
+    # for combinations like grd765, grd 876543
+    for i in range(9, -1, -1):
+        for j in range(9, 0, -1):
+            y = ""
+            for x in range(j, i, -1):
+                y += str(x)
+            for name in name_list:
+                for name_2 in name_form_change(name):
+                    comb = name_2 + y
+                    final_list.append(comb)
+
+            for j in special_char_list:
+                for name in name_list:
+                    for name_2 in name_form_change(name):
+                        comb = name_2 + j + y
+                        final_list.append(comb)
+
+
+# ######## name upper and cap
+def name_form_change(name):
+    out = [name, name.upper(), name.capitalize()]
+    return out
 
 
 # ######## DATE COMBINATION FUNCTION
