@@ -1,5 +1,7 @@
 import calendar
-
+from random import randint
+import threading
+import sys
 print("★·.·´¯`·.·★ GRD Dict Maker ★·.·´¯`·.·★\n"
       "Hello! My name is Coder Singh. This software is to make custom password dictionary by t"
       "aking the info about the person you want to hack. \n \n"
@@ -150,7 +152,7 @@ def lttr_to_special_chr(msg):
 
 
 # ######## STRING COMBINATION FUNCTION
-def str_combination(names):
+def str_combination(names, text):
     if names is None or names == '':
         return
     name_list = [names]
@@ -159,6 +161,13 @@ def str_combination(names):
         main_list.append(x)
         name_list.append(x)
 
+    # special combination for name and year like grd97 if birth year is 1997
+    for name in name_list:
+        for name_2 in name_form_change(name):
+            comb = str(name_2) + str(birth_year)[2:]
+            final_list.append(comb)
+
+    # concating name with every other input
     for i in main_list:
         for name in name_list:
             for name_2 in name_form_change(name):
@@ -175,7 +184,6 @@ def str_combination(names):
                     simple_comb = str(name_2) + str(j) + str(i)
                     final_list.append(simple_comb)
 
-
     # for numbers like grd0123456789
     new_str = ""
     for i in range(0, 10):
@@ -187,9 +195,7 @@ def str_combination(names):
                 comb = name_2 + new_str
                 final_list.append(comb)
 
-        for j in special_char_list:
-            for name in name_list:
-                for name_2 in name_form_change(name):
+                for j in special_char_list:
                     simple_comb = str(name_2) + str(j) + str(i)
                     final_list.append(simple_comb)
 
@@ -207,9 +213,7 @@ def str_combination(names):
                     comb = name_2 + y
                     final_list.append(comb)
 
-            for j in special_char_list:
-                for name in name_list:
-                    for name_2 in name_form_change(name):
+                    for j in special_char_list:
                         comb = name_2 + j + y
                         final_list.append(comb)
 
@@ -225,9 +229,7 @@ def str_combination(names):
                 comb = name_2 + new_str
                 final_list.append(comb)
 
-        for j in special_char_list:
-            for name in name_list:
-                for name_2 in name_form_change(name):
+                for j in special_char_list:
                     comb = name_2 + j + str(i)
                     final_list.append(comb)
 
@@ -245,11 +247,44 @@ def str_combination(names):
                     comb = name_2 + y
                     final_list.append(comb)
 
-            for j in special_char_list:
-                for name in name_list:
-                    for name_2 in name_form_change(name):
+                    for j in special_char_list:
                         comb = name_2 + j + y
                         final_list.append(comb)
+
+    # combinations for name + number
+
+    for i in range(50):
+        sys.stdout.write('\r')
+        sys.stdout.write(text+"[%-100s] %d%%" % ('=' * i, 2 * i))
+        sys.stdout.flush()
+
+        for name in name_list:
+            for name_2 in name_form_change(name):
+                comb = name_2 + str(i)
+                if comb not in final_list:
+                    final_list.append(comb)
+
+                for j in special_char_list:
+                    comb = name_2 + j + str(i)
+                    if comb not in final_list:
+                        final_list.append(comb)
+
+    for x in range(25):
+        # print(x)
+        sys.stdout.write('\r')
+        sys.stdout.write(text+"[%-20s] %d%%" % ('=' * x, 4 * x))
+        sys.stdout.flush()
+        i = randint(0, 10000000000)
+        for name in name_list:
+            for name_2 in name_form_change(name):
+                comb = name_2 + str(i)
+                if comb not in final_list:
+                    final_list.append(comb)
+                    final_list.append(i)
+
+                for j in special_char_list:
+                    comb = name_2 + j + str(i)
+                    final_list.append(comb)
 
 
 # ######## name upper and cap
@@ -266,17 +301,25 @@ def date_combination(month):
     final_list.append(combination)
     combination = str(birth_date) + month.upper() + str(birth_year)
     final_list.append(combination)
+    combination = str(birth_date) + month.capitalize() + str(birth_year)
+    final_list.append(combination)
+    combination = str(birth_date) + month.upper() + str(birth_year)[2:]
+    final_list.append(combination)
 
 # ################# first name combinations ############### #
-str_combination(first_name)
-
+print("# ################# first name combinations ############### #")
+# str_combination(first_name)
+t1 = threading.Thread(target=str_combination, args=(first_name, "First Name:",))
 
 
 # ################# last name combinations ############### #
-str_combination(last_name)
+print("# ################# last name combinations ############### #")
+# str_combination(last_name)
+t2 = threading.Thread(target=str_combination, args=(last_name, "Last Name:",))
 
 
 # ################# date combinations ############### #
+print("# ################# date combinations ############### #")
 if birth_date is not None or birth_date != '' or birth_month is not None or birth_month != '' or birth_year is not None or birth_year != '':
     combination = str(birth_date) + str(birth_month) + str(birth_year)
     final_list.append(combination)
@@ -285,21 +328,41 @@ if birth_month is not None and birth_month != '' and birth_month:
     date_combination(calendar.month_abbr[int(birth_month)])
 
 # ################# phone number combinations ############### #
+print("# ################# phone number combinations ############### #")
 if phone is not None or phone != '':
     final_list.append(phone)
 
 
 # ################# pet combinations ############### #
-str_combination(pet_name)
-
+print("# ################# pet combinations ############### #")
+# str_combination(pet_name)
+t3 = threading.Thread(target=str_combination, args=(pet_name, "Pet Name:",))
 
 # ################# fav number combinations ############### #
-str_combination(str(fav_number))
+print("# ################# fav number combinations ############### #")
+# str_combination(str(fav_number))
+t4 = threading.Thread(target=str_combination, args=(str(fav_number), "Fav Number:",))
+
+
+# ########## LAUNCHING THE THREADS
+t1.start()
+t2.start()
+t3.start()
+t4.start()
+
+t1.join()
+t2.join()
+t3.join()
+t4.join()
+
 
 # ################# other hints combinations ############### #
+print("\n# ################# other hints combinations ############### #")
 for i in hints_list:
     if i is not None:
-        str_combination(str(i))
+        str_combination(str(i), "Other Hints:")
+
+print("\nNumber of combinations made:", len(final_list))
 
 file_name = input("Enter file name(extension not required): ")
 first_name = file_name.strip(".txt")
@@ -307,6 +370,6 @@ file_name += '.txt'
 
 file_open = open(file_name, "w")
 for word in final_list:
-    file_open.write(word+"\n")
+    file_open.write(str(word)+"\n")
 
-print("Done. Dhan  GRD. ")
+print("Done. Dhan  GRD. \nTotal number of combinations made:", len(final_list))
