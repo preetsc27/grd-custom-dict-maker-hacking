@@ -365,7 +365,9 @@ for i in hints_list:
 print("\nNumber of combinations made:", len(final_list))
 
 file_name = input("Enter file name(extension not required): ")
-first_name = file_name.strip(".txt")
+if file_name == None or file_name == "":
+    file_name = "custom-dict.txt"
+file_name = file_name.strip(".txt")
 file_name += '.txt'
 
 file_open = open(file_name, "w")
