@@ -2,11 +2,11 @@ import calendar
 from random import randint
 import threading
 import sys
-print("★·.·´¯`·.·★ GRD Dict Maker ★·.·´¯`·.·★\n"
+print("\n\n★·.·´¯`·.·★ GRD Dict Maker ★·.·´¯`·.·★\n\n"
       "Hello! My name is Coder Singh. This software is to make custom password dictionary by t"
       "aking the info about the person you want to hack. \n \n"
       "Please fill the necessary details if you do not know then leave it empty(press enter). \n"
-      "『c』『o』『d』『e』『r』 『s』『i』『n』『g』『h』")
+      "『c』『o』『d』『e』『r』 『s』『i』『n』『g』『h』\n\n")
 
 main_list = []
 
